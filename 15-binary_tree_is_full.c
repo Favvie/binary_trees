@@ -1,44 +1,41 @@
 #include "binary_trees.h"
 
-void traverse(const binary_tree_t *tree, size_t *count);
-
 /**
- * binary_tree_leaves - get the number of leaves in a binary tree
- * @tree: tree to check
- *
- * Return: size of tree
+ * binary_tree_is_full - checks if a binary tree is full
+ * @tree: a pointer to the root node of the tree to check
+ * Return: If tree is NULL, your function must return 0
  */
-
-size_t binary_tree_leaves(const binary_tree_t *tree)
+int binary_tree_is_full(const binary_tree_t *tree)
 {
-	size_t count = 0;
+	int count = 1;
 
 	if (!tree)
-		return (count);
-	traverse(tree, &count);
+		return (0);
+	check_full(tree, &count);
 	return (count);
 }
-
-
 /**
- * traverse - goes through a binary tree using in-order traversal
- * @tree: a pointer to the root node of the tree to traverse
- * @count: current count of tree leaves during traversal
+ * check_full - checks if all nodes have two nodes
+ * @count: pointer to number of nodes
+ * @tree: pointer to root
+ * Return: Nothing
  */
-
-void traverse(const binary_tree_t *tree, size_t *count)
+void check_full(const binary_tree_t *tree, int *count)
 {
-	if (!tree->left && !tree->right)
-	{
-		*count += 1;
+	if (!tree)
 		return;
-	}
-	if (tree->left)
+	if (tree->left && tree->right)
 	{
-		traverse(tree->left, count);
+		if (!tree->left || !tree->right)
+		{
+			(*count) = 1;
+			return;
+		}
 	}
-	if (tree->right)
+	else if (!(!tree->right && !tree->left))
 	{
-		traverse(tree->right, count);
+		(*count) = 0;
 	}
+	check_full(tree->left, count);
+	check_full(tree->right, count);
 }
